@@ -1,5 +1,8 @@
 # google-looker-certification-guide
 
+- What is Looker?
+- The Looker platform
+
 ## What is Looker?
 
 At the conclusion of this lesson, you will be able to:
@@ -54,9 +57,38 @@ The left-side panel provides the content navigation options for users that have 
 
 > Data viewers do not create their own reports and visualizations.
 
-**Explore** - If you have been added as a data explorer to a Looker instance, you will also see the Explore tab in the left panel of the Looker UI.
+- **Explore menu** - If you have been added as a data explorer to a Looker instance, you will also see the Explore tab in the left panel of the Looker UI.
 
 As a data explorer, you use Explores to ask questions of your data and create visualizations and reports that can be shared with others such as data viewers.
 
 Explores are curated by Looker developers in a proprietary templating language called **LookML**. The Explores that you have been given access to will be listed under this Explore tab.
+
+- **Develop menu** is used by LookML developers to curate the Explores that are accessible to data explorers via the Explore tab.
+
+Within the Develop environment, developers can specify which fields are available in each Explore, how each field appears, and the logic or behavior for each field. Developers can use the toggle button at the bottom left-side of the UI to enter Development Mode to make and test changes to LookML code before sending the changes to production.
+
+> At your organization, you may not see a Develop menu if that is not part of your role.
+
+- **Admin menu** Looker administrators use the Admin menu to configure the users, permissions, and other settings for the Looker instance such as database connections.
+
+> At your organization, you may not see an Admin menu if that is not part of your role.
+
+- **Recently viewed** - you can access your recent Looker content browsing history in Recently viewed. This might be useful if you need to access a report from a day or two ago.
+
+- **Favorites** - When you do find something that you want to save for future reference, you can add it as a favorite. This section will contain all of your
+bookmarked dashboards and Looks.
+
+- **Boards** serve as a useful way of organizing content, such as saving multiple Looks and dashboards onto one board that you can share with others.
+
+- **Folders** - if your Looker administrator has installed any tools or Blocks (which are pre-built data models from the Looker Marketplace), they would also show up in this left-side panel.
+    - **My folder** - Each user has a personal folder with their name on it; in the current view, it is labeled as My folder. For you as a Looker user, this is your own scratch space for works in progress, as well as a storage space for content that is only meaningful to you or your role.
+    - **All folders** - you can go to the People folder under All folders to see other users’ personal folders.
+
+From the top-right, you’ll see four icons:
+
+1. **Magnifying glass** allows you to search across the Looker instance by keyword and also links you back to Looker Connect for learning assistance.
+2. **Looker Marketplace** is where you can find applications and tools to get more out of your data.
+3. **Help icon** provides links to chat support, docs, a user guide, and more.
+4. **User** icon is where you’ll find access to information associated with your Looker account.
+5. **Settings icon** if you have admin access, a fifth gear icon will appear between the Looker Marketplace and help icons that allows access to the admin settings page.
 
