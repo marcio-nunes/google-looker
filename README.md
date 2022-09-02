@@ -114,3 +114,36 @@ Now, from here, you could click on the gear icon to:
 - download it to your computer in a format such as CSV or spreadsheet.
 - or send it to a colleague for review and next steps.
 
+## Organizing Looker content
+
+At the conclusion of this lesson, you will be able to:
+
+- Recognize and interpret Looker’s hierarchical folder structure for content
+- Recognize and detail the various destinations where content can reside within the Looker
+platform
+
+A common challenge that organizations face is that people struggle to find relevant content that already exists, so they make their own, causing duplicates and confusion.
+
+To help you address this challenge, Looker provides many ways to organize content to make it more discoverable to others at your organization, including the ability to create and share folders within your Looker instance.
+
+
+### Shared folder
+
+Depending on the settings configured by your Looker admin, it is common for the Shared folders page to be set as the home page for users.
+
+All shared folders that are accessible to you will appear at the top of the Shared folders page under the header called Folders.
+
+If you have been granted the permission to create new folders in your Looker instance, you can create a new shared folder by clicking on the New button in the top right-hand corner next to the gear menu icon. The new shared folder will be visible to all users within your Looker instance that can access items
+within Shared folders.
+
+The goal of the shared folder is to make the content stored there as easy to find and use as possible. Be sure to take a moment to review the existing Shared Folders structure as you decide when and where to create new folders and their appropriate names.
+
+### My folder
+
+In Looker, all users are provided with their own personal folder as a scratch location to work with content. While your personal folder is intended to be your own space for works in progress, and other items that you may not need to share, other users within a Looker instance can be granted access to your personal folder, if needed, by Looker administrators.
+
+Just like in the shared folders, you can click on New within My folder to create a new folder, if you have the permission to do so.
+
+### All folders 
+
+All folders is useful to easily and quickly see all the folders that you have access to within your Looker instance. The All folders page provides links to Shared folders as well as other users’ personal folders within the People folder.
