@@ -176,3 +176,70 @@ In summary, dimensions help you to identify and select data attributes that you 
 
 ### Measures in Looker
 
+At the conclusion of this lesson, you will be able to:
+
+- Recognize and define the purpose of a measure in Looker
+- Recognize and articulate where in the Looker UI end users work with measures
+- Recognize and define to what SQL functions a measure can correspond
+- Recognize and articulate how measures contribute to the larger data analysis process in Looker
+
+Measures are calculations performed across multiple rows of data. As such, measures are aggregates of data attributes, or dimensions.
+
+In summary, as highlighted in these examples, measures are useful for aggregating dimensions (or data attributes), so that you can easily calculate values such as count, sum, or even averages across your data.
+
+Looker tries to guess the right type of visualization based on the data in your results set.
+
+### Using dimensions and measures
+
+At the conclusion of this lesson, you will be able to:
+
+- Recognize the relationship between dimensions and measures
+- Recognize and articulate how the relationship between dimensions and measures contributes to the larger data analysis process in Looker.
+
+In real-life analytics, you often need to combine dimensions and measures, in order to answer your data questions.
+
+By combining the necessary dimensions and measures, you can answer more complex questions by fully leveraging datasets that have many available attributes and aggregations.
+
+### Filtering dimensions
+
+- Recognize and define the process of filtering by a dimension in Looker
+- Recognize and articulate where in the Looker UI end users can filter dimensions
+- Recognize and articulate how filtering by dimensions can contribute to the larger data analysis process in Looker
+
+In Looker, filters are ways to reduce or narrow down the results returned based on specific criteria. In this way, filters allow you to hone in on a subset of your data based on desired characteristics.
+
+You can use dimension filters to select only the data you want to see in your results, without affecting the underlying data tables.
+
+### Filtering measures
+
+- Recognize and define the process of filtering by a measure in Looker
+- Recognize and articulate where in the Looker UI end users can filter measures
+- Recognize and articulate how filtering by measures can contribute to the larger data analysis process in Looker
+
+In Looker, you can filter on both dimensions and measures to select only the data you want to see or include in your results. In either case, the underlying data is not affected, and Looker knows which data to include or exclude based on the filter.
+
+With measure filters, Looker first gets all the possible rows and calculates all the potential aggregations. Then, Looker discards the undesired results at the end, before returning the results.
+
+If a dimension is used as a filter, then Looker will apply that filter first and then aggregate data based on the measure that has been selected.
+
+When you use a dimension filter, Looker will exclude the rows that do not meet the criteria at the very beginning of the analysis. 
+
+When you use a measure filter, Looker first calculates all the potential aggregations and then excludes the results that do not meet the desired criteria at the end of the analysis, before returning the results.
+
+## Working with Looker content
+
+### Filtering Looks
+
+- Recognize and define the process of filtering within a Look in Looker
+- Recognize and articulate where in the Looker UI end users can filter within Looks
+- Recognize and articulate how filtering within a Look can contribute to the larger data analysis process in Looker
+
+Throughout your data analysis and visualization workflows in Looker, you will likely work with Looks that you have already made or that were made by others.
+
+One of the most common and powerful ways to modify an existing Look is to apply filters to it, so that users can limit the results returned based on specified criteria.
+
+To apply filters to a Look, you need to first enter Edit mode in the Look by clicking on the Edit button in the top right of the screen.
+
+Now that you are in edit mode, you can add filters in the same way that you apply filters in an Explore, by using the field picker in the left-side panel to choose filters from dimensions and measures.
+
+All that is left to do is to save the changes to your Look by clicking the Save button in the top right corner of the screen, in the blue bar.
