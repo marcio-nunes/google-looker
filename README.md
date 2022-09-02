@@ -157,3 +157,22 @@ Just like in the shared folders, you can click on New within My folder to create
 
 All folders is useful to easily and quickly see all the folders that you have access to within your Looker instance. The All folders page provides links to Shared folders as well as other users’ personal folders within the People folder.
 
+## Data analysis building blocks
+
+### Dimensions in Looker
+
+At the conclusion of this lesson, you will be able to:
+
+- Recognize and define the purpose of a dimension in Looker
+- Recognize and articulate where in the Looker UI end users work with dimensions
+- Recognize and define to what asset a dimension corresponds in your database
+- Recognize and articulate how dimensions contribute to the larger data analysis process in Looker
+
+Dimensions are attributes or characteristics of your data. Specifically, each column in a database table is a dimension in Looker.
+
+When you select a dimension in Looker, only the unique possible values are displayed. Be aware that selecting multiple dimensions may result in more rows or different groupings than you may initially expect.
+
+In summary, dimensions help you to identify and select data attributes that you need to answer your questions in Looker. Each column in a database table is a dimension in Looker, and you can combine dimensions to return all the unique combinations of the values.
+
+### Measures in Looker
+
