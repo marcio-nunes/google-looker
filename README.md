@@ -1,5 +1,14 @@
 # google-looker-certification-guide
 
+1. Looker Platform
+2. Data analysis building blocks
+3. Working with Looker content
+4. Customizing Explores
+5. Creating new Looker content
+6. Sharing Looker data with others
+
+# Looker Platform
+
 - What is Looker?
 - The Looker platform
 
@@ -147,3 +156,4 @@ Just like in the shared folders, you can click on New within My folder to create
 ### All folders 
 
 All folders is useful to easily and quickly see all the folders that you have access to within your Looker instance. The All folders page provides links to Shared folders as well as other users’ personal folders within the People folder.
+
