@@ -92,3 +92,17 @@ From the top-right, you’ll see four icons:
 4. **User** icon is where you’ll find access to information associated with your Looker account.
 5. **Settings icon** if you have admin access, a fifth gear icon will appear between the Looker Marketplace and help icons that allows access to the admin settings page.
 
+### Folders page sections
+
+- **Folders** section contain Looks and dashboards for specific groups of people. You can copy, move, or save Looks and dashboards to a folder. Folders can also contain sub-folders.
+- **Dashboards** section shows various pieces of data in one location. Each section of a dashboard is referred to as a single visualization or tile.
+
+Dashboards in business intelligence show you various pieces of information about some overall topic or domain. In Looker, you can click on a visualization to “drill down", meaning you can see a more detailed breakdown of the data. 
+
+If you have permission to access the underlying data, you will usually find an option to **Explore** or **Explore from Here** to drill down into additional information. Clicking on this option takes you out of the dashboard and into a separate interface called the **Explore**. From this point on, you can work with the underlying data through
+the Explore without affecting the dashboard that you were just viewing. Explore is a report-builder interface as well as a portal to ask questions of your data.
+
+To the left of the screen is the field picker. Fields are bundled in these expand-collapse menus called views. Each view is a related concept.
+
+Each view has dimensions at the top, which are attributes of the data, and measures at the bottom, which are aggregations of the data attributes.
+
