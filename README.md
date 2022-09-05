@@ -314,7 +314,7 @@ Don’t worry, though. Even if a user is given access to the board, they cannot 
 
 In the browse window, you will be shown every board to which you have access within your organization’s Looker instance. Remember, though, while you may have access to a board, you may not have access to all or any of the content curated on that board. To get access to the underlying content, you can reach out to your Looker administrator.
 
-## Pivoting data in Looker
+### Pivoting data in Looker
 
 - Recognize and define the process of pivoting data in Looker
 - Recognize and articulate where in the Looker UI end users can pivot their data
@@ -326,4 +326,53 @@ In Looker, pivots allow you to turn a selected dimension into several columns, w
 When you pivot on a dimension, each unique possible value of that dimension becomes its own column header. Any measures are then repeated under each column header.
 
 With pivots, Looker allows you to regroup your data, so that you can easily compare results by different groupings and identify potential gaps, all while leaving your underlying data unaffected.
+
+## Introducing table calculations
+
+- Recognize and define the purpose of a table calculation
+- Recognize and articulate the situations where someone should consider writing a new table calculation in Looker
+- Recognize and articulate how writing table calculations can contribute to the larger data analysis process in Looker
+
+In Looker, table calculations provide you with the ability to define new metrics instantaneously using custom formulas.
+
+Table calculations are used to define what we call “on-the-fly metrics” because they run on your query results, instead of your whole database.
+
+You’ll need to start by generating results with at least one dimension or measure, and then you can incorporate these fields into spreadsheet software-like formulas to calculate a new metric.
+
+With table calculations, you can also set up a custom field that isn’t included in the set of dimensions and measures provided by your LookML developers.
+
+Table calculations are really cool and convenient. However, because they run after the query has been set up and are written on the fly, they can introduce differences across an organization, and they need to be recreated manually if they are not saved to a Look or dashboard.
+
+So, we recommend using table calculations for a couple of specific use cases.
+
+- The first is to prototype a field or query, like if you want to validate whether it’s useful enough to reuse. Similarly, if you need to answer a one-off question, then a table calculation is useful. If you find yourself needing the same logic repeatedly, you should work with your LookML developer team to have that logic added to the data model as dimensions or measures that everybody can use.
+- Another scenario that might call for a table calculation is if you need to create something based purely on the results set and not on the overall data. A specific example would be if you want to create a specific kind of visualization, like one not available in your current Looker version or for which you don’t have the right types of fields in your data model. In this case, you can use a table calculation to translate your data or visualization into the form you want.
+
+Since table calculations only operate on the results of your Explore query, you first need to bring in one or more dimensions or measures by selecting the fields you need to calculate the desired metric and then click Run.
+
+After you select the dimensions and measures and run the initial results, you can now create a new table calculation from the results. Next to Custom Fields, click the Add button, and select Table Calculation. A new popover window will appear in which to enter your formula.
+
+Now, one thing to be aware of here is that because administrators must enable this feature for end users, you might not have the Custom Fields view in the Explore of your organization’s Looker instance, even if you do have permission to use table calculations. In that case, you would see a Calculations button at the top of the data table.
+
+Assuming Custom Fields are available to you, in the table calculation popover, you will need to select a calculation type, or leave the selected option for Custom expression to write ad hoc expressions. Next, give your new table calculation a name. This name will show up as the column header and in the legend of the visualization.
+
+If using a custom expression for the table calculation, enter the formula you’d like to apply. You can get the absolute value of a number, add time intervals to a date, concatenate multiple values, write if-conditions, and so on.
+
+An important thing for people very familiar with spreadsheet software to know is that with Looker table calculations, you do not start the formula with an equals sign. That might feel a bit weird, but you’ll get used to it.
+
+Next, specify the format of the results if you’d like: decimals, percent, and so on.
+
+Finally, click Save to save your table calculation.
+
+You will now see table calculations appear in your data table in green. The values will show up right away since you have already run your query with the dimensions and measures.
+
+If you don’t want a specific field or table calculation in your visualization, you can click on the gear icon in the column header and select Hide from Visualization. An icon of an eye with a line crossing over it will appear to indicate that the column is hidden.
+
+In addition to writing custom expressions for table calculations, you can choose from some predefined options such as calculating the percent of column total, percent change from a previous row, running totals, and more. With options for both predefined and custom expressions, Looker gives you the power to customize your visualizations and reports as needed.
+
+In summary, table calculations allow you to instantaneously create new metrics and fields, without needing to wait for a LookML developer to create them for you.
+
+Enjoy using table calculations. Just remember that since they run after the query has been set up and are written on the fly, they can introduce differences across an organization, and they need to be recreated manually if they are not saved to a Look or dashboard. 
+
+For these reasons, table calculations are most useful for prototyping new metrics, answering one-off questions, or creating visualizations based purely on query results.
 
