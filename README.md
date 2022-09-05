@@ -243,3 +243,19 @@ To apply filters to a Look, you need to first enter Edit mode in the Look by cli
 Now that you are in edit mode, you can add filters in the same way that you apply filters in an Explore, by using the field picker in the left-side panel to choose filters from dimensions and measures.
 
 All that is left to do is to save the changes to your Look by clicking the Save button in the top right corner of the screen, in the blue bar.
+
+## Introducing Looker dashboards
+
+- Recognize and define the components that comprise a dashboard in Looker
+- Recognize and define the purpose of a dashboard in Looker
+- Recognize and articulate where in the Looker UI end users can work with dashboards
+- Recognize and articulate how dashboards can contribute to the larger data analysis process in Looker
+
+You can create new dashboards by saving visualizations from an Explore or an existing Look to a new dashboard. In an Explore or Look, simply click on the settings gear on the top right, and select Save to a Dashboard. Then, select the folder where you want to create your new dashboard.
+
+Editing dashboards to add new content or revise the existing layout is also very easy. Start by clicking on the three vertical dots icon for Dashboard Actions at the top right of the page, and select Edit Dashboard.
+
+In edit mode, you’ll see options to add tiles and filters to the dashboard as well as modify its settings to configure how the dashboard runs and refreshes. To add new content to a dashboard, you can click on Add Tile to add a new visualization or text tile. Selecting a new visualization tile will display a new Explore window for you to build the visualization, which you can then save to the dashboard. Text tiles can be useful as section dividers or commentary for your dashboard viewers.
+
+Once in edit mode, you can also rearrange the tiles by clicking on the top left corner of a tile and dragging it around to the desired location. You can also resize a tile by clicking on the bottom right corner and dragging to the desired size.
+
