@@ -261,3 +261,29 @@ Once in edit mode, you can also rearrange the tiles by clicking on the top left 
 
 ### Filtering dashboards
 
+- Recognize and define the process of filtering within a dashboard in Looker
+- Recognize and articulate where in the Looker UI end users can filter within dashboards
+- Recognize and articulate how filtering within a dashboard can contribute to the larger data analysis process in Looker
+
+In Looker, dashboard filters, sometimes called global dashboard filters, behave similarly to dimension and measure filters in that they allow users to limit the results based on a specified criteria.
+
+To add a new filter to a dashboard, first make sure you are in edit mode on the dashboard.
+
+Start by clicking on the three vertical dots icon for Dashboard Actions at the top right of the page, and select Edit Dashboard. Then, click on Filters in the top menu bar, followed by Add Filter.
+
+Next, you need to select the dimension and/or measure that you want to use as the filter. You need to give your filter a name or title, choose how the user interacts with the filter, determine the layout and whether they can select single or multiple values, and if desired, configure a default value for the filter.
+
+You can also expand the Additional options to require a filter value or select other filters to be updated when this filter changes. This last option is useful if you want what we call a “faceted filter.” A common example would be if you have one filter for State and one for City, and you want to make sure that when someone selects a state the list of available cities updates to offer only the cities in the selected state.
+
+On the Tiles To Update tab, you can identify the tiles that you want to update with the new filter. Looker even starts you off with some suggested tiles.
+
+An important thing to keep in mind about dashboards is that you can add tiles from different Explores—in fact, that flexibility is what makes them so powerful and valuable. So sometimes, you may find that only some, but not all, of the tiles get automatically identified to be populated with your new filter because the other tiles aren’t based on the same Explore.
+
+Sometimes you might not want filters to apply to all tiles. Again, it’s a question of what you’re trying to achieve with the filter; it’s more about design than any scientific rule. For example, imagine that you have a tile that shows the number of orders year over year. If someone else were to change the Created Month filter value to just the past 6 months, then the tile would only display one big bar for this year.
+
+Any time you have a tile like this that is supposed to show data for all time, all regions, all something—you might want to head back to the Tiles To Update tab and select the Field to Filter option to “Do not filter”.
+
+Finally, when you are adding filters to your dashboard, be sure to click Save to save your changes!
+
+### Curating Looker content with boards
+
