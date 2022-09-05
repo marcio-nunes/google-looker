@@ -376,3 +376,15 @@ Enjoy using table calculations. Just remember that since they run after the quer
 
 For these reasons, table calculations are most useful for prototyping new metrics, answering one-off questions, or creating visualizations based purely on query results.
 
+### Types of table calculations
+
+- Recognize and detail the various types of table calculations
+- Recognize and articulate the purpose of each type of table calculation
+
+With table calculations, you can prototype new metrics or create one-off visualizations from your query results, without having to wait for a LookML developer to modify the options available in a particular Explore. There are four basic types of table calculations in Looker: string, mathematical, logical, and date & time.
+
+- String functions operate on query results that are text. For example, they can be used to capitalize letters and words, extract parts of a phrase, check to see if a word or letter is in a phrase, or replace elements of a word or phrase.
+- With mathematical functions in Looker, you can apply any kind of math on numeric values, such as arithmetic, averages, sums—even running totals and standard deviations.
+- With logical functions, you can check one or more conditions and execute different paths of logic, depending on the value.
+- Finally, date and time functions operate on datetime results and allow you to extract time periods and calculate date differences and additions. You can also get the current date, time, or date and time, and create arbitrary date fields as needed.
+
