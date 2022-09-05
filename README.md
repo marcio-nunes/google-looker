@@ -287,3 +287,43 @@ Finally, when you are adding filters to your dashboard, be sure to click Save to
 
 ### Curating Looker content with boards
 
+- Recognize and define what a board is in Looker
+- Recognize and articulate where in the Looker UI end users can work with boards
+- Recognize and define the process of creating a board in Looker
+- Recognize and define the process for pinning Looks and dashboards to a board in Looker
+
+Boards are a great way to centralize relevant content that lives in different folders within your organization’s Looker instance. The great thing about boards is that they simply link to a content item such as a Look or dashboard, which remains in its original location. So boards do not store the actual content, and the original
+content remains unaffected.
+
+With boards, you also don’t have to worry about permissions or data privacy because users still need access to the folder containing the item, in order to access that content from a board.
+
+For example, the Favorites menu shows all your own bookmarks, but creating a board allows you to share those bookmarks with other users and teams. Any Looks and dashboards added to the board will still live in their original folders; the board merely links to them and serves as a centralized page to easily find the content.
+
+In addition to creating your own boards, you can also browse all boards that you have access to within your organization. On the Looker home page, click on the plus sign (+) icon next to Boards in the left-side navigation panel, and select Browse all boards.
+
+You can add Looks and dashboards by clicking on the blue plus sign (+) next to Pin a dashboard or Look. A window will open for you to navigate and select the content that you want to add.
+
+Looker also provides the ability to group content by adding new sections, and you can write a description for the entire board itself, as well as for each individual section, to aid others in using the board efficiently.
+
+Looker also makes it easy to pin a Look or dashboard to a board when you are viewing the content in its original location. For example, from a Look, click on the gear menu at the top right of the screen, and choose Pin to a board. You can follow a similar process to pin a dashboard when viewing it in its original location.
+
+Looker also makes it easy to explicitly share access to your board with others. Simply click on the share icon at the top right of the page, and select the users that you want to access the board as well as their level of access such as view or edit. Remember, boards can be for your own benefit, for people you invite, or even for your entire team or
+organization.
+
+Don’t worry, though. Even if a user is given access to the board, they cannot view a particular content item on a board if they don’t already have access to see it.
+
+In the browse window, you will be shown every board to which you have access within your organization’s Looker instance. Remember, though, while you may have access to a board, you may not have access to all or any of the content curated on that board. To get access to the underlying content, you can reach out to your Looker administrator.
+
+## Pivoting data in Looker
+
+- Recognize and define the process of pivoting data in Looker
+- Recognize and articulate where in the Looker UI end users can pivot their data
+- Recognize and articulate the situations where someone should consider pivoting data in Looker
+- Recognize and articulate how pivoting data can contribute to the larger data analysis process in Looker
+
+In Looker, pivots allow you to turn a selected dimension into several columns, which creates a matrix of your data similar to a pivot table in spreadsheet software. This is very useful for analyzing metrics by different groupings of your data, such as getting counts for each category or label in your dataset.
+
+When you pivot on a dimension, each unique possible value of that dimension becomes its own column header. Any measures are then repeated under each column header.
+
+With pivots, Looker allows you to regroup your data, so that you can easily compare results by different groupings and identify potential gaps, all while leaving your underlying data unaffected.
+
