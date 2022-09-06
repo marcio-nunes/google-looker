@@ -628,3 +628,6 @@ In this task, make specific modifications to an existing Look ML dashboard.
 6. Click the Save button on your visualization changes to commit them.
 8. Save your changes by clicking the blue “Save Changes” button at the top-right of the editor. You will notice a blue dot next to dash_name.dashboard now in the File Browser.
 9. Push your changes to the Looker Git repository
+
+## Modeling Explores for your users
+
