@@ -291,12 +291,12 @@ Within users.view after the last listed dimension and before the first measure, 
 
 Save your changes by clicking the blue “Save Changes” button at the top-right of the editor. You will notice a blue dot next to the users.view view file now in the File Browser.
 
-'''
+```
 dimension: city_state {
 type: string
     	sql: ${city} || ‘, ‘ || ${state};;
 }
-'''
+```
 
 Task #3 - Create a shipping days dimension in the orders_items view file
 
