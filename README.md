@@ -388,3 +388,103 @@ With table calculations, you can prototype new metrics or create one-off visuali
 - With logical functions, you can check one or more conditions and execute different paths of logic, depending on the value.
 - Finally, date and time functions operate on datetime results and allow you to extract time periods and calculate date differences and additions. You can also get the current date, time, or date and time, and create arbitrary date fields as needed.
 
+### Writing table calculations in Looker
+
+- Recognize and articulate where in the Looker UI to write table calculations
+- Recognize and articulate the purpose of each type of table calculation
+- Recognize and define the process by which someone would write table calculations
+
+After you have the initial query results, you can add a table calculation from the Custom Fields section. Click Add next to Custom Fields, and then select Table Calculation.
+
+### Introducing offset calculations
+
+- Recognize and define the purpose of an offset calculation
+- Recognize and articulate the difference between a standard table calculation and an offset calculation
+- Recognize and articulate how writing offset calculations can contribute to the larger data analysis process in Looker
+
+Offset functions are a subset of table calculation functions. They allow you to programmatically reference values from other rows or columns in your query results to calculate new values.
+
+There are three main types of offset functions: regular offset(), pivot_offset(), and offset_list(). Uses include computing period-over-period change and rolling avarages.
+
+- A regular offset() function is used when you want to reference a value from a higher or lower row of your results. Note that changing the order of the rows by sorting your results can turn the previous row into the subsequent row, and vice versa.
+- The pivot_offset() function is used to reference values from a column to the left or the right when you have a pivot table.
+- The offset_list() function moves up or down a column of rows defined by a first provided value, and then grabs another number of rows’ worth of data defined by a second provided value. The two numbers can be the same or different, depending on the results you want.
+
+In summary, offsets are a subset of table calculation functions and allow you to programmatically reference values from other rows or columns in your query results to calculate new values. 
+
+There are three main types of offset functions: regular offset() for referencing rows higher or lower in a column, offset_list() for referencing values in a column to the left or right, and pivot_offset() for referencing multiple rows and combining their values into one new value.
+
+With these new values, you can create even more table calculations to calculate new metrics such as the percent difference from one month to the next, one year to the next, or even a rolling average.
+
+### Writing offset calculations
+
+- Recognize and articulate where in the Looker UI to write offset calculations
+- Recognize and define the process by which someone would write offset calculations
+
+## Sharing and scheduling Looks
+
+Recognize and detail the options someone can leverage to share a Look either once or with a
+regular schedule in the Looker platform
+● Recognize and articulate where in the Looker UI end users can either send or schedule a Look
+● Recognize and detail the steps necessary to configure a shared or scheduled Look
+
+Anytime you want to share or export content from Looker, we call that “data delivery.”
+
+## Using tile-level dashboard alerts
+
+Alerts in Looker enable you to specify data conditions that, when met or exceeded, trigger a notification to be sent to specific recipients at a desired frequency.
+Alerts are created on dashboard tiles that have at least one numeric measure or table calculation in the tile’s visualization. Each alert captures the dashboard and tile settings in place when created. With enhanced alerts enabled, many of the changes made to dashboard filters or tile content will sync to the alert, with some exceptions.
+
+The bell icon on a dashboard tile indicates the number of alerts set on that tile (that you are permitted to view).
+
+Depending on the dashboard tile’s visualization type and the kinds of fields that are present in the visualization, Looker checks your data in different ways. When you create an alert, it will be one of these types:
+
+- Single value alerts (used only with single value visualizations) — Looker checks the data based on the value that is used in the visualization, which is the first row of the results table 
+- Time series alerts (used when there is a date or time dimension in the tile query results) — Looker checks all new rows that have not been seen before (based on the date or time dimension in the query) 
+● Categorical alerts (neither single value nor time series) — Looker checks all rows and pivot values unless a specific row or pivot value was selected when the alert was created.
+
+Alert recipients or followers receive an email notification when the alert is triggered. The email contains:
+
+- A link to the dashboard for the tile on which the alert is based
+- The value that triggered the alert
+- The visualization for the tile on which the alert is based
+- Options to unfollow or, depending on your permissions and who owns the alert, to edit the alert
+
+> Note: With enhanced alerts enabled, alert owners receive an email notification when a user has made a change to any Looker content that may affect their alert, enabling the alert owner to act if needed.
+
+Once the alert is triggered, anyone in the alert’s specified Slack channel or included in a direct message will receive a Slack notification. The Slack notification contains:
+- A PNG image of the dashboard tile visualization
+- A message with the name of the dashboard or the custom alert title and the conditions that triggered the alert
+- A link to the dashboard for the tile on which the alert is based
+- A link to unsubscribe from the alert notification
+
+> Note: With enhanced alerts enabled, alert owners receive an email notification when a user has made a change to any Looker content that may affect their alert, enabling the alert to act if needed.
+
+Click on the alert icon on a dashboard tile to access the alert creation window.
+
+If there are alerts already set on that tile, Looker displays a list of the alerts that you are permitted to see. From the list, click New. If there are no alerts set on that tile, Looker displays the alert creation window.
+
+You can customize these alert settings. You can configure the following:
+- A custom title
+- The conditions that would trigger the alert (a field and value)
+- The recipients of the alert notification (you are listed as a recipient for email notifications automatically)
+- The frequency with which the data will be checked against the alert conditions
+- The visibility of the alert to other users (users who can see your alert may choose to follow it to receive notifications when the alert is triggered)
+
+If you’re not already listed as an alert recipient, you can follow the alert to receive notifications when the alert is triggered, according to the alert settings.
+
+- Click the alert icon on a dashboard tile.
+- In the list of alerts already set on that tile, click the Follow button
+
+You can see and manage a list of all alerts that you own, follow, or for which you are listed as a recipient on the Manage Alerts page in Looker.
+
+- Click your user profile icon in the top right corner.
+- Click Alerts.
+
+On the management page, you can view information about your alert, navigate to the alert’s dashboard, and access options to perform various actions on the alert:
+
+- Edit
+- Disable / Enable
+- Unfollow
+
+> Note: With enhanced alerts enabled, you can also filter alerts by certain criteria and view additional details about the alert, such as its run history, visualization, and whether it remains synchronized to its dashboard.
