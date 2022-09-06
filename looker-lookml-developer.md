@@ -267,3 +267,84 @@ Views are then accessed by business users through the Explore to query data and 
 Dimensions and measures are defined within view files. Dimensions are attributes of data and represent fields or columns in the database tables, while measures are aggregates of
 dimensions such as a count or sum. 
 
+### Lab
+
+Task #1 - Place Looker in Development mode
+
+In this task, place Looker into Development mode.
+
+Locate the Development Mode toggle in the immediate lower-left corner of the user interface.
+
+Click the toggle to activate Development mode. (LookML development can ONLY be performed in Development mode.)
+
+The blue bar now at the top of your screen indicates you are in Development mode.
+
+Task #2 - Create a city-state dimension in the users.view view file
+
+In this task, write LookML code to create a city-state dimension in the users.view view file.
+
+From the Develop menu in the left-hand navigation panel, select the qwiklabs-ecommerce LookML project.
+
+Under the views section, choose the users view (users.view) to edit.
+
+Within users.view after the last listed dimension and before the first measure, create a new dimension that combines City and State into a single field. 
+
+Save your changes by clicking the blue “Save Changes” button at the top-right of the editor. You will notice a blue dot next to the users.view view file now in the File Browser.
+
+'''
+dimension: city_state {
+type: string
+    	sql: ${city} || ‘, ‘ || ${state};;
+}
+'''
+
+Task #3 - Create a shipping days dimension in the orders_items view file
+
+In this task, write LookML code to create a shipping days dimension in the orders_items.view view file.
+
+From the Develop menu in the left-hand navigation panel, select the qwiklabs-ecommerce LookML project.
+
+Under the views section, choose the order_items view (order_items.view) to edit.
+
+Within order_items.view, create a Shipping Days dimension that calculates the number of days between the order ship date and the order delivered date. 
+
+Save your changes by clicking the blue “Save Changes” button at the top-right of the editor. You will notice a blue dot next to the order_items.view view file now in the File Browser.
+
+Task #4 - Create a traffic source email dimension in the users.view view file
+
+In this task, write LookML code to create a traffic source dimension in the users.view view file.
+
+From the Develop menu in the left-hand navigation panel, select the qwiklabs-ecommerce LookML project.
+
+Under the views section, choose the users view (users.view) to edit.
+
+Within users.view, create a new dimension that calculates whether the Traffic Source that brought in a given user was via “Email” or not. Your solution should include the yesno dimension type.
+
+Save your changes by clicking the blue “Save Changes” button at the top-right of the editor. You will continue to notice a blue dot next to the users.view view file in the File Browser.
+
+Task #5 - Create an age group dimension in users.view view file
+
+In this task, write LookML code to create a age group dimension in the users.view view file.
+
+From the Develop menu in the left-hand navigation panel, select the qwiklabs-ecommerce LookML project.
+
+Under the views section, choose the users view (users.view) to edit.
+
+Within users.view, create a dimension that groups individual ages into the following age group buckets: 18, 25, 35, 45, 55, 65, 75, 90. 
+
+Save your changes by clicking the blue “Save Changes” button at the top-right of the editor. You will continue to notice a blue dot next to the users.view view file in the File Browser.
+
+Task #6 - Push your changes to the Git repository
+
+In this task, you will commit the code changes you made to your Looker student git repository.
+
+With all your LookML changes to the users.view and order_items.view view files saved, click the Project Health icon in the top-right corner of the window.
+
+In the Project Health > LookML validation section, click Validate LookML icon.
+
+If it shows No LookML errors found, click the Commit Changes & Push button to push your changes to the repository.
+
+You will be asked to include a commit message so other developers will understand what changes you’ve made, so write “Added dimensions to users.view and order_items.view” for your commit message and click Commit.
+
+When that process completes, you’ll be presented with a new button that says Deploy to Production. Click this button to deploy your new LookML code.
+
