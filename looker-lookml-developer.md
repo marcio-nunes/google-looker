@@ -269,7 +269,120 @@ dimensions such as a count or sum.
 
 ## Modeling dimensions
 
-aaa
+- Recognize and detail the steps and conditions necessary to create a dimension used in an Explore in Looker
+- Recognize and identify where in the Looker UI LookML developers can create a dimension
+- Recognize and articulate the relationship between the dimensions you create in the Looker IDE and the dimensions that data viewers, decision makers, and business analysts
+use in Explores in Looker
+
+In Looker, dimensions are qualities or attributes of your data. Typically, each dimension represents a column in your underlying database.  
+
+### Referencing tables
+
+```
+dimension: first_name {
+    type: string
+    sql: ${TABLE}.first_name ;;
+}
+```
+
+When Looker generates a new view file from a table, it automatically creates dimensions for every column (or field) in the database table.
+
+Auto-generated dimensions have a sqlparameter containing the word TABLE highlighted in blue, with a dollar sign and curly braces, such as: sql: ${TABLE}.first_name
+
+**${TABLE}** references the table specified in the **sql_table_name** parameter at the top of your view file. This lets Looker know which database table to use as the default table when pulling the dimensions and measures.
+
+### Referencing objects
+
+```
+dimension: full_name {
+    type: string
+    sql: CONCAT(${first_name}, ' ', ${last_name}) ;;
+}
+```
+
+Another version of the substitution syntax is using an existing dimension or measure name within curly braces, preceded by a dollar sign, such as: sql: ${field_name}
+
+Referencing the Looker object is better than the hard-coded database column, so that the new field inherits any transformations or additional logic from the overall dimension. It also reduces the number of times or places you’ll need to make updates if something like the database column name changes.
+
+### Dimesions types
+
+In Looker, there are four common dimension types:
+
+- **String** - used for text.
+- **Number** - used for columns of numeric data types such as int, decimal, or float.
+- **yesno** - used for Boolean.
+- **Tier** - are useful for bucketing values. When defining a new tier dimension, you need to use the tiersparameter to indicate which buckets you want to assign. Each comma-separated number will be the start of a range. For example, a 0 followed by 30 means that there is a first bin containing the values from 0 to 29, followed by a second bin beginning at 30, and so on.
+    - There is also a **style** parameter where you can specify how you want the results to be formatted for business users, such as integer to display the bin range as whole numbers or relational to display a text expressions that include symbols such as less than (<) or greater than (>). 
+
+```
+dimension: first_name {
+    type: string
+    sql: ${TABLE}.first_name ;;
+}
+dimension: age {
+    type: number
+    sql: ${TABLE}.age ;;
+}
+dimension: is_new_customer {
+    type: yesno
+    sql: ${days_since_signup} <= 90 ;;
+}
+dimension: age_tier {
+    type: tier
+    tiers: [18, 25, 35, 45, 55, 65, 75, 90]
+    sql: ${age} ;;
+    style: integer
+}
+```
+
+### Dimesions groups: Time
+
+For these dimension groups, you use the timeframesparameter to specify the date and time parts required for the data. There are many options for the timeframe, such as hour, day_of_week, month, quarter, or year. 
+
+The number of dimension fields created within a dimension group is dependent on the number of timeframes listed in the timeframes parameter. For example, including only date, hour, month, and year will result in only these four dimension fields created as part of the dimension group.
+
+When generating new view files from tables, Looker will automatically create dimension groups for most date and time columns; though, it is possible for some formats to not be
+automatically recognized by Looker.
+
+```
+dimension_group: created {
+    type: time
+    timeframes: [raw, time, date, hour, hour_of_week_index, week, month_num, month, year, Quarter, quarter_of_year]
+    sql: ${TABLE}.created_at ;;
+}
+```
+
+When using an existing dimension group timeframe to define another dimension—for example, in a dimension performing a DATE_DIFF() or difference between two dates—you can specify
+the desired date or time unit to identify the date field from the dimension group. In this example, a new dimension named shipping_days is created based on the difference between the ${shipped_date}and the${created_date} in number of days.
+
+```
+dimension: shipping_days {
+    type: number
+    sql: DATEDIFF(${created_date}, DAY) ;;
+}
+```
+
+### Dimesions groups: Duration
+
+Using the intervals parameter, you can allow business users to choose from a range of time intervals. When possible, a best practice is to create dimension groups of
+type duration instead of defining dimensions that perform DATE_DIFF() functions in the sql parameter. This allows you to avoid hard-coding the date part, so your business users can choose what works best for them. 
+
+Additionally, this prompts Looker to write the function for you, which is easier if you’re not as comfortable with SQL, and it will create less work for you in the future, in case your company ever decides to change the underlying data source.
+
+```
+dimension_group: enrolled {
+    type: duration
+    intervals: [second, minute, hour,day, week, month, quarter, year]
+    sql_start: ${TABLE}.enrollment_date ;;
+    sql_end: ${TABLE}.graduation_date ;;
+}
+```
+
+To reference one of these fields, use: **${hours_enrolled}**, **${days_enrolled}**, **${years_enrolled}**, etc.
+
+In conclusion, there are many dimension types in Looker including string, number, yesno, tier, and dimension groups for time and duration. 
+
+When referencing a column from a database table for the first time in a LookML model, use **${TABLE}**. When defining new dimensions that build on existing ones, you can reduce the instances of hard-coding column names by using the **${field_name}** substitution operator to reference the existing LookML object.
 
 ### Lab
 
