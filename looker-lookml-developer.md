@@ -143,4 +143,87 @@ When working in your organization’s Looker instance, be mindful of whether you
 
 ## LookML Project Version Control
 
+- Recognize and interpret at a high level how Looker integrates with the Git version control system
+- Recognize and articulate the process by which LookML developers write, validate, merge, and ultimately deploy their code
 
+### Git
+
+Git is a widely used version-control system for multiple programmers to collaborate on the same library of code. Through Looker’s integration with Git, you can make and test changes locally first in Looker’s integrated development environment (or IDE), and then send your changes to the primary production environment after the changes have been tested locally. 
+
+This version control process allows you to collaborate on one project with other developers who can receive your updates as well as share their updates with you.
+
+To understand how version control with Git works, it is helpful to think of the Git repository for a LookML project as a tree. New LookML code is always written in a branch of the tree. The main production code that is live would be the trunk of the tree, while each developer creates a branch from the trunk to create and test new objects such as dimensions, measures, Explores and more.
+
+After changes have been tested locally in a branch, the LookML developer can send the changes to the trunk, or the production environment for the LookML project. After that point, other developers can pull changes from the trunk to their branches of the project.
+
+Git is commonly managed through a third-party provider such as GitHub, Bitbucket, or GitLab. To configure Git, you need a URL or connection string for the repository that you would like to use.
+
+The Git configuration is typically completed by a Looker team lead or administrator and only has to be completed once per LookML project. The lead or administrator will set up the GitHub repository to allow write access from the LookML developers, so that all of them can sync changes to and from the primary production repository on GitHub. 
+
+One key point that you need to know as a LookML developer is that when you enter Development Mode, Looker automatically creates a local branch for you to make and test changes. This branch can be only be modified by you, though developers with access to the same project can view others’ branches if they like. The Looker IDE will alway display which branch you are working in, at the top of the page next to the project name.
+
+On the Git Actions page, you can also view others’ branches in read-only mode, or even create new branches or even sharedbranches, also known as feature branches. You may want to create a new branch if you have only partially completed a large workflow on your own branch, and you need to develop and deploy an unrelated change without sending all of your other code changes to the production environment.
+
+Shared branches are useful for allowing multiple developers to collaborate on the same version of code to implement a new feature or bug fix. The shared branch can easily be deleted once the collaboration is complete. 
+
+Another key concept for developers to remember is that all changes made in development mode remain in the active development branch until they are pushed to production. So you
+can continue to make and test changes to LookML code in development mode without having to push these changes to production until you are ready. 
+
+Depending on the settings configured by the administrator of you organization’s Looker instance, you may have access to send your changes directly to production. While by default LookML developers can merge and deploy their changes to production, Looker administrators can choose to restrict the deployment of changes to production by configuring projects to use pull requests using the Configuration options on the Project Settingspage. 
+
+When pull requests are enabled, developers submit pull requests to notify others that they want to submit changes to the production code. Another team member (usually a lead or designated reviewer) reviews the pull request in the Git provider (such as github.com), and if they approve the changes, they can choose to merge the changes to production.
+
+While you are working in your branch, you may decide that you no longer want to save the changes that you have been making. Luckily, in the Looker IDE, you can revert any changes made in development mode that have not been pushed to production by using the Revert to options on the Git Actions page. This action will undo all uncommitted changes, so that you can start over with a clean branch that matches the latest production environment.
+
+In summary, when you enter development mode, Looker will automatically create a local branch for you to make and test changes. The branch that you are currently working in will always be displayed at the top of the Looker IDE. You can see additional information about your branch and access different options under the Git Actions page of the IDE.
+
+All changes made in development mode will remain in development mode until they are merged to production. Depending on the settings configured by your Looker admin, you may have
+permission to directly merge your changes to production, or you may have to submit a pull request for someone else to review and approve your changes.
+
+### Exemple of Git Workflow in Looker
+
+Begin by enabling Development Mode using the toggle button for Development Mode in the bottom left corner of the Looker home page. Then, click Develop on the left side navigation menu.
+
+Within the Develop options, click on the project.
+
+A best practice when working in a new branch is to first pull changes from production to your local branch, to ensure that you have the most recent version of all project files. You can pull changes from production by clicking the Pull from…option on the Git Actions page. In the window that opens, select Pull from Production. After you have pulled the updates from production, you are ready to start writing new LookML code in your current development branch.
+
+As you make changes in your branch, the button in the top right corner of the IDE will display the next step that is needed in the Git workflow.
+
+A greyed out status of **Up to Date** indicates that the branch matches the production environment. This means that your current branch contains all changes previously sent to the production environment and that new no changes have been made yet in your branch.
+
+When you do make a new change in your branch, a button labeled **Save Changes** will appear in the top right of the code window. Be sure to save your changes often. If you have made changes in a file without saving them, you will prompted to save your changes before you navigate to other files in your project. 
+
+As you save changes to a file (such as adding, editing, or removing code), a blue dot will appear next to the name of the modified LookML file in the File Browser. This makes it easy for you to see where you have been making changes in your branch.
+
+After you save your changes, you will be prompted to validate the changes by selecting **Validate LookML**. This ensures that your changes include valid LookML code. If the initial validation identifies errors, you can resolve the errors, save your changes, and validate the changes again. 
+
+After validating your LookML code, the next step in the Git workflow is to Commit Changes & Push changes to your branch. This step completes two actions: first it commits your changes to the local .git folder, where local versioning takes place. Then, it pushes your local branch to sync with your remote branch on the external Git repository (which would be in a third-party tool such as GitHub).
+
+While this step makes the validated LookML code from your branch available on the remote Git repository such as GitHub, the changes are not available yet to the business users—there’s one more step we’ll see next to deploy the changes to production. 
+
+After you click on Commit Changes & Push, a new window will open in the IDE with a list of the files that were modified. In this Commit window, it is a best practice to include a short comment explaining the changes that were made in the commit.
+
+The last step in the Git workflow is to Merge to Primary Branch. This action will deploy your changes to production, where business users will see your changes immediately.
+Depending on the settings configured by your Looker admin, you may not see this option if you do not have permission to directly merge your changes to production. In that case, you would submit a pull request for someone else to review and approve your changes.
+
+If you do have the sufficient permissions but still do not see the option to merge and deploy, then you likely have encountered a merge conflict that needs to be resolved. A merge conflict means that another developer recently committed some code that conflicts with yours. Perhaps you both tried to edit line 10 of the same view file.
+
+You will need to review the conflicting files (highlighted in the file browser), choose which changes to keep, and then commit again to receive the option to merge and deploy. 
+
+After you successfully merge and deploy your changes to production, the Looker IDE will once again display an Up to Datestatus.
+
+## How Looker Writes SQL
+
+- Recognize and articulate how Looker reads, parses and writes SQL
+- Recognize and define the relationship between SQL and Looker’s LookML modeling language
+
+As a LookML developer, you can define as many dimensions and measures as you like in your view files to curate data. Remember though, for business users to leverage these dimensions and measures, you need to make them available through Explores. To create Explores, it is helpful to first understand how Looker generates SQL before learning how to work with the model file within your project. 
+
+All SQL queries in Looker begin with the data and options that business users select from the Explore. When users click the run button, Looker automatically generates and sends the necessary SQL to the underlying database, and then returns the results to the user. 
+
+As a LookML developer, you can see the SQL query generated by Looker and then sent to the underlying database in the SQL window.
+
+To summarize, the dimensions selected by business users are listed in the SELECT statement of the generated SQL query, while the selected measures appear in the SELECT statement as aggregating functions, such as count, applied to dimensions. In the SQL query, the base view of an Explore is always selected first, and other needed views are joined based on users’ selections; unnecessary views in the Explore are not joined in the SQL query. 
+
+As the users select filters and update limits in the Explore, those re also reflected in the generated SQL query using the WHERE, HAVING, and LIMIT clauses. Now after this deep dive into the SQL queries generated by Looker, you are ready to leverage Looker-generated SQL to design Explores for your business users. 
