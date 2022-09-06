@@ -483,3 +483,51 @@ In this task, you will commit the code changes you made to your Looker student g
 4. You will be asked to include a commit message so other developers will understand what changes you’ve made, so write “Added dimensions to users.view and order_items.view” for your commit message and click Commit.
 5. When that process completes, you’ll be presented with a new button that says Deploy to Production. Click this button to deploy your new LookML code.
 
+## Modeling measures
+
+- Recognize and detail the steps and conditions necessary to create a measure used in an Explore in Looker
+- Recognize and identify where in the Looker UI LookML developers can create a measure
+- Recognize and articulate the relationship between the measures you create in the Looker IDE and the measures that data viewers, decision makers, and business analysts use in Explores in Looker
+
+In Looker, dimensions represent the data attributes in a database table, whereas measures are ways to perform aggregate functions, such as a count, on the dimensions.
+
+Whenever you define new dimensions and measures that build on existing ones, it is a best practice in Looker to use ${field_name} to reference existing LookML objects.
+
+```
+measure: name_of_measure {
+    type: measure_type
+    sql: ${field_name} ;;
+}
+```
+
+### Measure types
+
+- **Sum** - aggregates the values in a specified dimension by adding all values together to calculate a total value.
+- **Average** - the mean value of the specified dimension.
+- **Count** - if you use Looker to generate your model files from a data source, your model’s view files will already contain a default measure for the count of rows. This count does not use the sql parameter; instead, it will simply use the view’s primary key as the dimension to aggregate.
+- **Count Distinct** - If you want to count something other than the view’s primary key, you need to use the measure type called count_distinct. This type does allow you to input a sql parameter for the dimension you want to count.
+
+```
+dimension: sale_price {
+    type: number
+    sql: ${TABLE}.sale_price ;;
+}
+measure: total_revenue {
+    type: sum
+    sql: ${sale_price} ;;
+}
+measure: average_sale_price {
+    type: average
+    sql: ${sale_price} ;;
+}
+measure: count_items_ordered {
+    type: count
+}
+measure: count_users {
+    type: count_distinct
+    sql: ${user_id} ;;
+}
+```
+
+In summary, there are three primary measure types in Looker including sum, average, and count. To define a new measure, use the sql parameter to specify which dimensions you want to aggregate, and then define a way to aggregate them using the type parameter.
+
