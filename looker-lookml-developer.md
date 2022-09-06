@@ -232,3 +232,38 @@ As the users select filters and update limits in the Explore, those re also refl
 
 ## Anatomy of a LookML project
 
+LookML stands for Looker Modeling Language. It is Looker’s proprietary language that establishes an abstraction layer for SQL. Developers use LookML to tell Looker what data to use from the connected database and how it should interpret that data. 
+
+Specifically, LookML acts as the modeling layer between the connected SQL database and your business users. Looker uses the LookML code written by developers to define how business users interact with a connected database and to construct SQL queries against that particular database. 
+
+Developers use LookML to define many items from the connected SQL database including data attributes called dimensions, aggregates of dimensions called measures, data relationships such as how to join tables, and custom tables and fields.
+
+A key concept of LookML to remember is: If it’s possible in your SQL dialect, it should be possible in Looker.
+
+### Hierarchy of LookML objects
+
+For full comprehension of the key LookML terms, developers need to understand where each object fits into the overall hierarchy of a LookML project.
+
+- **LookML Project** - The highest level, is a library of self-contained LookML code. Because Looker uses Git for version control, a best practice is for each project to map one-to-one with a dedicated Git repository. A project is essentially a library of code for a specific data source or database connection and contains one or more data models.
+You can think of each project as an semi-independent or miniinstance of Looker, and each project should map one-to-one to a Git repository for version control. 
+- **Models** - As previously mentioned, a LookML project is composed of one or more models. A model specifies a database connection and the data views that utilize that connection. Specifically, a model file is used to define:
+    - The database connection.
+    - The view files that are accessible to this model.
+    - The Explores (which are pre-joined views) and their join logic.
+- **Explores** - which are sets of pre-joined views organized by business area defined within the model files. Explores are the central component of Looker that allow business and data analysts to conduct self-serve data exploration, analysis, and visualization. Within a model file, developers define Explores that join one or more views together to target specific questions that business users may have. So you can think of an Explore as a predefined set of tables that would frequently be joined for business inquiries and use cases.
+- **Views** that are joined in the Explores represent the underlying database tables. Within view files, developers can define the dimensions (or data attributes) and measures (or aggregations of attributes) to provide to business users in the Explore interface. 
+- **Dimensions and measures** 
+    - Dimensions are data attributes and represent the fields or column of a database table. When the view files are generated from a table by Looker, dimensions are automatically created for any columns that already exist within your database tables. You can also create additional dimensions that would serve as logical representations of table columns. 
+    - Measures are aggregates of dimensions and do not live explicitly in your database tables. They must be created using LookML. They aggregate dimensions into values like sums or counts. 
+
+To recap, a LookML project is a library of code that models a data source and should map 1:1 to a Git repository for version control.
+
+Projects contain model files, which define the Explores that should be packaged together, how those Explores work, and which views are joined in which Explores. 
+
+View files describe database tables or logical representations of them and are joined together to define Explores in the model files.
+
+Views are then accessed by business users through the Explore to query data and create reports and visualizations.
+
+Dimensions and measures are defined within view files. Dimensions are attributes of data and represent fields or columns in the database tables, while measures are aggregates of
+dimensions such as a count or sum. 
+
