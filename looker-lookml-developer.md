@@ -817,3 +817,101 @@ In summary, as a LookML developer, you define the Explores for business users wi
 
 The sql_on parameter identifies the shared column that is being used to join the tables, while the relationship parameter is used to identify the cardinality, or how the records in the views are matched, such as many_to_one. After this overview of Explores and join logic, you can now curate Explores for your business users to analyze and visualize data in your organization’s Looker instance.
 
+## Using LookML to filter Explores
+
+- Recognize and detail the steps and conditions necessary to add a new filter option to an existing Explore using the Looker IDE
+- Recognize and identify where in the Looker UI LookML developers can add a new filter option to an Explore
+- Recognize and articulate the relationship between the filters you add to an Explore in the Looker IDE and the filters you add to an Explores that data viewers, decision makers, and business analysts use in Looker
+
+To filter an Explore, you need to apply a default WHEREor HAVINGclause to every SQL query that gets generated in that Explore. There are three principal ways to add default filters to an Explore:
+
+- **sql_always_where** and **sql_always_having** - allow you to add filters to an Explore that cannot be modified by business users. This is useful when you have certain rows of data you always want to exclude from the Explore results such as sensitive data or personally identifiable information (PII). The filtering does not display in the user interface, so business users are not informed that the data are being filtered, unless they have permission to look at the generated SQL. 
+- **always_filter** - adds a filter to the Explore frontend that is accessible to business users. Users can change the filter operator and specific values, but they cannot remove the filter itself. always_filter has a subparameter to define the dimensions that users must provide values for, such as a value for order status or user country. For example, while the default order status is “Complete”, business users can change this value to say orders with a different status like “Returned”. This filter is helpful for optimizing query performance and cost savings because you ensure that users always filter by specific dimensions and do not request all of the possible data at one time. 
+- **conditionally_filter** -  adds a filter to the Explore frontend that is accessible to business users. In this case, users can remove the filter itself if they put a filter on a specific alternative field. conditionally_filterhas a subparameter to define the specific filters as well as a subparameter to define the alternative dimensions that can be
+used to filter the data. For example, conditionally_filtercan be used to create a filter that only returns data for the past 1 month, unless a filter is applied to a user ID or state dimension. This filter is helpful when you want to limit the amount of data that a business user requests, but you also want to give them a list of alternative dimensions that they can use to filter the data.
+
+> Remember though, if your Explore filter uses a field from a different view other than the base view, that view will alwaysbe joined in to every Explore query as well, even if the business user doesn’t explicitly select or filter on any dimensions or measures from it. The join to that Explore needs to be there for the filter condition to work.
+
+```
+explore: order_items{
+    sql_always_where: ${order.items.created_date >= '2012-01-01'} ;;
+
+    sql_always_having: ${order_count} > 10 ;;
+
+    always_filter: [status: "Complete", users.country: "USA"]
+
+    conditionally_filter: {
+        filters: [created_date: "1 month"]
+        unless: [users.id, users.state]
+    }
+...
+}
+```
+
+In summary, there are three principal ways to add default filters to an Explore. sql_always_where and sql_always_having are both used to add filters that cannot be modified or seen by business users. Specifically, sql_always_where is used to apply default filters for dimensions, while sql_always_having is used to apply default filters for measures.
+
+Both always_filter and conditionally_filter are helpful for ensuring that users always filter the data using specific dimensions, so that they do not request all of the possible data at one time. While the filter for always_filter cannot be removed by business users, conditionally_filter allows users to remove the default filter if they choose an alternative dimension from a provided list of options. 
+
+## Understanding symmetric aggregation
+
+- Recognize and define what symmetric aggregation is
+- Recognize and articulate how Looker utilizes symmetric aggregation to resolve specific types of data analysis problems
+
+A key concept to understand when working with Explores and join logic is symmetric aggregation. This is a great feature of Looker that ensures accurate aggregation of data for counts, sums, and averages. 
+
+Symmetric aggregation addresses a common problem in data and analytics called the fanout problem.
+
+Imagine you have two tables, customers and orders. The relationship between the tables is one-to-many because a customer can make multiple orders, but each order can only be
+made by a single customer.
+
+When considering these tables individually, the count and sum operations produce accurate results. There are 3 total customers, 4 orders, 8 total visits, and $250 in total order spending.
+
+|customer_id|first_name|last_name|visits|
+|-|-|-|-|
+|1|Amelia|Earheart|2|
+|2|Charles|Lindberg|2|
+|3|Wilbur|Wright|4|
+
+|order_ir|amount|customer_id|
+|-|-|-|
+|1|25.00|1|
+|2|50.00|1|
+|3|75.00|2|
+|4|100.00|3|
+
+To join these two tables in an Explore, it is pretty clear that customer_id should be the join key. However, given the one-tomany relationship, you actually produce what is called a fanout when you join them on customer_id. 
+
+|customer_id|first_name|last_name|visits|order_ir|amount|customer_id|
+|-|-|-|-|-|-|-|
+|1|Amelia|Earheart|2|1|25.00|1|
+|1|Amelia|Earheart|2|50.00|1|
+|2|Charles|Lindberg|2|3|75.00|2|
+|3|Wilbur|Wright|4|4|100.00|3|
+
+It introduces a duplicate row for customer_id 1 because Amelia Earhart made more than one order. When performing aggregations on the customers side of the table, you would now get incorrect results. For example, SUM(visits) amounts to 10.
+
+As long as symmetric aggregation is supported by your underlying database, Looker will automatically implement symmetric aggregations when the following two conditions are met. 
+
+- First, every view file in your model must have a primary_keydefined to join it to an Explore. As a best practice, you should strive to define a primary_key in every view regardless of whether it will be joined to an Explore.
+- Second, the relationship parameter needs to be specified accurately for every Explore join.
+
+An easy way to test if a primary key is functioning as a unique key is to compare a count of the field you believe to be a primary key against a COUNT(*) on the table. If the two counts return the same number, you have your primary key. If not, you can create a new dimension that concatenates all the columns necessary to make each row unique. 
+
+Another option is to think about the join keys. Is customer_id the primary key? Are the values unique in the first view? What about the other view—is it possible that the same value could appear multiple times there?
+
+> Remember you cannot assign the primary_key: yes parameter to more than one dimension in a view.
+
+So what would happen if you specified the wrong relationship between customers and orders, say, one-to-one instead of one-tomany? Well, in this case, the data on the customer's side would fan out. Remember, you only had 3 customers: Amelia Earhart, Charles Lindbergh, and Wilbur Wright. Their combined visits totaled 8. However, by using a one-to-one relationship instead of one-tomany, the Explore returns 4 customers with a total of 10 visits because Amelia Earhart is counted twice, along with her 2 visits.
+
+If you specify the correct relationship between customers and orders, which is one-to-many, then Looker will automatically apply symmetric aggregation, resulting in the correct outputs of 3 customers and 8 total visits.
+
+So how does COUNT actually work in symmetric aggregation? You might have already been wondering about COUNT(DISTINCT). Since this query executes a one-to-many join, Looker indeed realizes it needs to count the distinct customer_id values rather than a blanket COUNT(*), which would include duplicate customer_id values from the orders side.
+
+Sums and averages are a bit more complex, but function similarly in that distinct records are identified for the calculations using the MD5 hash function. As symmetric aggregation is already implemented by Looker, you do not need to fully learn when and why to use MD5to be a successful LookML developer. 
+
+What Looker is basically doing is generating a unique numeric amount for each primary key value using the MD5 hash function. So the two rows for Amelia Earhart would both get assigned a big_unique_number. Then, to calculate the total true visits, Looker uses basic arithmetic problem to determine whether or not it should count a given number of visits again, something like: SUM(DISTINCT visits + big_unique_number) - SUM(DISTINCT big_unique_number)
+
+In summary, symmetric aggregation is a great feature of Looker that addresses potential fanout problems resulting from data joins. As long as symmetric aggregation is supported by your underlying database, Looker will automatically implement symmetric aggregations when the following two conditions are met. 
+
+First, every view has a primary_key to join it to an Explore, and second, the relationship parameter for every Explore join is accurate. With symmetric aggregation, Looker ensures that your counts, sums, and averages are always accurate for your business users. 
+
