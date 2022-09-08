@@ -636,3 +636,184 @@ In this task, make specific modifications to an existing Look ML dashboard.
 
 # 3. Modeling Explores for your users
 
+- Recognize and detail the steps and conditions necessary to model a new Explore using the Looker IDE
+- Recognize and identify where in the Looker UI LookML developers can model an Explore
+- Recognize and articulate the relationship between the Explores you model in the Looker IDE and the Explores that data viewers, decision makers, and business analysts use in Looker
+
+In Looker, Explores can be thought of a set of tables with predefined join logic. As a LookML developer, you define and curate Explores for users at your organization to analyze data and answer their business questions. 
+
+Within the model file of a project, you can define Explores similarly to how you define dimensions and measures: by typing the word “explore” followed by a colon (:), and giving it a name. 
+
+> Unlike dimensions and measures, which can be named however you like, the name of the Explore must be the name of an actual view file. 
+
+```
+explore: base_view {
+    join: order_view {
+        type: left_outer
+        sql_on: ${base_view.id} = ${order_view.column_id} ;;
+        relationship: one_to_many
+  	}
+}
+```
+
+To understand how to define explores, let’s review the key parameters within the explore definitions in a model file. First, the **explore** name establishes the base view, meaning that it is the central view for analysis in the Explore. Other views joined to this Explore provide additional or supplemental analysis capabilities. 
+
+You need to define a join in the explore definition using the **join** parameter. 
+
+Then, you need to provide a value for the type parameter to identify the join type between the views.
+
+The four types of joins available in Looker are: **left_outer**, **inner**, **full_outer**, and **cross**. If no type is provided, the default type applied is **left_outer**. 
+
+- **left_outer** join means that all records in the left-side view of the join will be retained, even if there is not a match with any records in the right-side view of the join. 
+- **inner join** means only matched records between the two views will be retained.
+- **full_outer** means all records in both views will be retained whether or not there is a match in the other view.
+- **cross join** generates a paired combination of all rows across both views, independent of whether records match or not. 
+
+After defining the join table and type, you need to provide the data fields for the join using the **sql_on** parameter. Typically, you join two tables using a dimension from one view that is the same as a dimension in the other view. 
+
+Last, the relationship parameter describes the cardinality between the two views, meaning how many records could potentially be matched between the views based on the fields
+identified in the sql_on parameter. In Looker, the options for relationships are **one-to-one**, **one-to-many**, **many-to-one**, or **many-to-many**. If no relationship parameter is provided, the default relationship applied is **many_to_one**.
+
+- **One-to-one** indicates that each record in both views has only one matching record in the other table. 
+- **Many-to-one & one-to-many** - Many-to-one indicates that there may be many records from the first view that are connected to only one record in the second view table, and vice versa for one-to-many. 
+- **Many-to-many** means that there could be multiple records in the left view that match multiple records in the right view.
+
+**Standard joins** - As the name of the Explore is also the base view, it is always in the FROM clause of any SQL query generated in the Explore. Joins defined directly to the base view of an Explore are referred to as standard joins.
+
+Sometimes you may need to join the same table twice in an Explore. In the world of manually writing SQL queries, you would give the two tables different aliases. In LookML, you can do this by providing a unique name for the join, and then referencing the actual view name to be joined in the from parameter. 
+
+In this example, the joins named aircraft_origin and aircraft_destination are both joining the same views named flights and airports to provide different information: one join for the origin location and another join for the destination location. The names of the joins use alias names, while the fromparameter both specify airports. Notice that the sql_on parameter uses the alias names as well. 
+
+```
+explore: flights {
+    join: carriers {
+        type: left_outer
+        sql_on: ${flights.carrier} = ${carriers.code} ;;
+        relationship: many_to_one
+    }
+
+    join: aircraft {
+        type: left_outer
+        sql_on: ${flights.tail_num} = ${aircraft.tail_num} ;;
+        relationship: many_to_one
+    }
+-------------------------------------------------------------------------
+>   join: aircraft_origin {
+>       from: airports
+        type: left_outer
+>       sql_on: ${flights.origin} = ${aircraft_origin.code} ;;
+        relationship: many_to_one
+        fields: [full_name, city, state, code, map_location]
+    }
+
+>   join: aircraft_destination {
+>       from: airports
+        type: left_outer
+>       sql_on: ${flights.destination} = ${aircraft_destination.code} ;;
+        relationship: many_to_one
+        fields: [full_name, city, state, code]
+    }
+-------------------------------------------------------------------------
+    join: aircraft_flight_facts {
+        view_label: "Aircraft"
+        type: left_outer
+        sql_on: ${flights.tail_num} = ${aircraft_flight_facts.tail_num} ;;
+        relationship: one_to_one
+        fields: [full_name, city, state, code]
+    }
+}
+```
+
+**Indirect joins** - You can also write indirect joins that do not join to the base view; instead, they join to another view in the Explore that is already joined to the base view. Indirect joins can be useful when there is no shared join key with the base view but can potentially impact performance. 
+
+In this example, the join aircraft_flight_facts does not join to the base view called flights; instead, it joins to aircraft, which is referenced in the second join in this Explore. Any time a business user has an inquiry involving aircraft_flight_facts, the generated SQL query will first select FROM flights and then join to aircraft—even if no fields or filters are needed from aircraft itself—so that it can then join to aircraft_flight_facts. 
+
+```
+explore: flights {
+    join: carriers {
+        type: left_outer
+        sql_on: ${flights.carrier} = ${carriers.code} ;;
+        relationship: many_to_one
+    }
+-------------------------------------------------------------------------
+>   join: aircraft {
+-------------------------------------------------------------------------
+        type: left_outer
+        sql_on: ${flights.tail_num} = ${aircraft.tail_num} ;;
+        relationship: many_to_one
+    }
+
+   join: aircraft_origin {
+        from: airports
+        type: left_outer
+        sql_on: ${flights.origin} = ${aircraft_origin.code} ;;
+        relationship: many_to_one
+        fields: [full_name, city, state, code, map_location]
+    }
+
+    join: aircraft_destination {
+        from: airports
+        type: left_outer
+        sql_on: ${flights.destination} = ${aircraft_destination.code} ;;
+        relationship: many_to_one
+        fields: [full_name, city, state, code]
+    }
+
+    join: aircraft_flight_facts {
+        view_label: "Aircraft"
+        type: left_outer
+-------------------------------------------------------------------------
+>       sql_on: ${flights.tail_num} = ${aircraft_flight_facts.tail_num} ;;   <- Indirect Join
+-------------------------------------------------------------------------
+        relationship: one_to_one
+        fields: [full_name, city, state, code]
+    }
+}
+```
+
+> So due to the extra join, we recommend that you aim to use a join key from the base view when possible, rather than using indirect joins. 
+
+Here is an example SQL query you might have needed to write by hand before using Looker. Imagine that you want to get the number of canceled flights whose aircraft originated in the state of California as well as some additional details about these canceled flights such as flight destination, aircraft name, and aircraft origin.
+
+```SQL
+SELECT 
+    flights.destination AS flights_destination,
+    aircraft.name AS aircraft_name,
+    aircraft_origin.city AS aircraft_origin,
+    count(*) AS flight_count
+FROM training.faa.flights AS flights
+
+LEFT JOIN training.faa.aircraft AS aircraft
+    ON flights.tail_num = aircraft.tail_num
+
+LEFT JOIN training.faa.airports AS aircraft_origin
+    ON flights.origin = aircraft_origin.code
+
+WHERE (flights.canceled = TRUE) AND (aircraft_origin.state = 'CA')
+GROUP BY 1, 2, 3 
+```
+
+Same query in LookML Explore.
+
+```LookML Explore
+explore: flights {
+    join: aircraft {
+        type: left_outer
+        sql_on: ${flights.tail_num} = ${aircraft.tail_num} ;;
+        relationship: many_to_one
+    }
+
+    join: aircraft_origin {
+        from: airports
+        type: left_outer
+        sql_on: ${flights.origin} = ${aircraft_origin.code} ;;
+        relationship: many_to_one
+    }
+```
+
+By leveraging your pre-defined Explore logic, Looker empowers self-serve analysis and exploration by your business users, which saves you time and resources as a LookML developer.
+
+In summary, as a LookML developer, you define the Explores for business users within the model file of a project. The name of the Explore must be the name of an actual view file, and you can define joins to other views in your model to provide additional details in the Explore. To define a new join, use the joinparameter to name the join, typically the same name as the actual view file. Then, use the type parameter to identify how the two views should be joined, such as left_outer.
+
+The sql_on parameter identifies the shared column that is being used to join the tables, while the relationship parameter is used to identify the cardinality, or how the records in the views are matched, such as many_to_one. After this overview of Explores and join logic, you can now curate Explores for your business users to analyze and visualize data in your organization’s Looker instance.
+
