@@ -884,7 +884,7 @@ To join these two tables in an Explore, it is pretty clear that customer_id shou
 |customer_id|first_name|last_name|visits|order_ir|amount|customer_id|
 |-|-|-|-|-|-|-|
 |1|Amelia|Earheart|2|1|25.00|1|
-|1|Amelia|Earheart|2|50.00|1|
+|1|Amelia|Earheart|2|2|50.00|1|
 |2|Charles|Lindberg|2|3|75.00|2|
 |3|Wilbur|Wright|4|4|100.00|3|
 
