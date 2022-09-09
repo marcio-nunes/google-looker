@@ -915,3 +915,5 @@ In summary, symmetric aggregation is a great feature of Looker that addresses po
 
 First, every view has a primary_key to join it to an Explore, and second, the relationship parameter for every Explore join is accurate. With symmetric aggregation, Looker ensures that your counts, sums, and averages are always accurate for your business users. 
 
+# Working with derived table
+
