@@ -968,4 +968,9 @@ model such as dimensions and measures to create new tables. They are often easie
 
 Though which option you use will depend on your particular details of your LookML project, both SQL derived and native derived tables are great features in Looker that you can use to create new, custom tables for your business needs. 
 
-## 
+## Using SQL derived tables
+
+- Recognize and articulate where in the Looker UI to create a SQL derived table
+- Recognize and articulate the specific purpose of a SQL derived table
+- Recognize and define the process by which someone would create a SQL derived table
+
