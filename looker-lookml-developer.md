@@ -917,3 +917,55 @@ First, every view has a primary_key to join it to an Explore, and second, the re
 
 # Working with derived table
 
+- Recognize and define the purpose of a derived table● Recognize and articulate the situations where someone should consider deploying a derived table
+- Recognize and articulate how using a derived table can contribute to the larger data analysis process in Looker
+
+Derived tables are a great feature of Looker that allows you create new tables that do not yet exist in a database.
+
+When you work with existing tables in your connected database, you reference the necessary table names in the sql_table_name parameter of the view files.
+
+It is not unusual for existing database tables to be insufficient to assist us in answering more complex questions of our data. Sometimes we need to structure our data in other ways through SQL objects like temporary tables, materialized views, common table expressions (CTEs), and subqueries.
+
+In LookML terms, if you need to produce a CTE or temp table, you need to define a derived table.
+
+The most common use case for derived tables is to overcome structural limitations for patterns that would require a subquery in raw SQL. A nested or multi-step aggregation is a common pattern where we need to do an aggregate of an aggregate. 
+
+### Defining derived tables
+
+Derived tables are either manually written SELECT statements or Looker-generated SELECT statements that produce results that can be queried just like a “real” database table.
+
+Derived tables are integrated in LookML projects as views. You can explore or join those views in the same way as the other views that point to actual database tables.
+
+Derived tables have two types of existence:
+
+- **Ephemeral tables**, which compile at runtime and are generated as CTEs or temp tables.
+- **Persistent tables**, or PDTs, which are stored in the underlying database.
+
+The benefit in persisting derived tables is that they are ready to go when business users need them, and therefore reduce query runtimes. The downsides are that they take up storage space in your database (which may correlate to cost), and they are more rigid (they can’t accept dynamic logic). So you may choose to persistent only some of your derived tables, such as the most frequently used ones.
+
+In summary, derived tables are a useful feature for defining new custom tables that do not yet exist in your database. Derived tables are used just like other views in your LookML project and produce results that can be queried just like a real database table. Depending on your use case, derived tables can be ephemeral or written back to the database as a persistent derived table. 
+
+With derived tables, you can create custom tables to aggregate your data in a variety of ways to help you answer business questions.
+
+## Types of derived tables
+
+- Recognize and differentiate between the two types of derived tables 
+- Recognize and articulate the situations where someone should consider deploying one type of derived table over the other
+
+In Looker, you can use derived tables to define new custom tables that do not exist in your underlying database. Derived tables are created in LookML projects as views that you can join in an Explore, just like other views that point to actual database tables.
+
+Derived tables also produce results that can be queried just like real database table, and they can be either ephemeral or written back to the database as a persistent derived table.
+
+- Derived tables can be written in SQL, which is an easy option if you’re already comfortable with SELECT statements in SQL. In addition to being easier to learn and understand for SQL users, SQL derived tables have the advantage of being able to leverage complex and custom joins and calculations, as well as the UNION function.
+- **Native derived tables (NDT)** - derived tables can also be written entirely in LookML, which we call native derived tables, or NDTs. NDTs embody the essential LookML principle of reusability by allowing you to leverage existing objects in your model, such as dimensions and measures, to define new tables. Because NDTs minimize the number of “hard-coded” database references in your code, they are easier to maintain and allow your model to scale efficiently as your organization’s usage of Looker increases. 
+
+You could create a SQL derived table by writing a SELECT statement, However, what if your LookML model already contains measures for order_item_count and total_revenue? Rather than creating a SQL derived table, you can reuse these existing measures to easily define a new NDT.
+
+This would allow you to avoid hard-coding another reference to the underlying database table, thereby saving you work in the future if and when you need to update those measures. 
+
+In summary, there are two ways to define derived tables in Looker. First, SQL derived tables are easy for SQL users to learn and understand, and can include complex joins and calculations, as well as the UNION function. In contrast to SQL derived tables, native derived tables are expressed entirely in LookML and reuse existing objects in your
+model such as dimensions and measures to create new tables. They are often easier to maintain and scale because they minimize the number of “hard-coded” database references in your code. 
+
+Though which option you use will depend on your particular details of your LookML project, both SQL derived and native derived tables are great features in Looker that you can use to create new, custom tables for your business needs. 
+
+## 
