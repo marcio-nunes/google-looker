@@ -1102,5 +1102,88 @@ In summary, after PDTs are written back to your databases, they are stored as ph
 
 ## Caching and datagroups
 
+- Recognize and define both caching and datagroups incontext 
+- Recognize and articulate the situations where someone should consider deploying caching and datagroups to improve query performance
+- Recognize and articulate how using caching and datagroups can potentially benefit the larger data analysis process in Looker
+
+In Looker, caching is a useful feature that LookML developers can use to reduce database load and optimize query performance. Caching leverages the saved results from previously executed queries, so that the same query does not need to be run on the database each time. 
+
+The overall caching process in Looker is straightforward andbegins with a query. As users are exploring and analyzing data, Looker generates SQL queries and checks whether there are valid cached results for each query.  
+
+If there are valid cached results for a query, Looker will avoid requesting the same data again from the database, and instead, simply send those cached results back to the user. If there are no valid cached results for that query, Looker sends the query to the connected database. These new SQL results are then cached and stored in an
+encrypted file on the Looker instance. This file can then be used by Looker, if and when the same query is run again.
+
+Now, to help ensure that cached results remain valid and up-todate, LookML developers can set up datagroups, or caching policies, to manage the frequency and conditions for caching on a Looker instance. For example, a datagroup can be created to ensure that all cached results are updated at least once an hour, or when a new ID is added for a key field such as user ID or order ID. 
+
+The datagroups are then used by Looker to check whether cached results are still valid. If the cached results are no longer valid per the datagroups, Looker will send the query to the database to obtain new results. 
+
+In Looker, datagroups can be defined both to establish cachingpolicies and rules for entire models, individual Explores, or specific PDTs in your LookML projects, and to  ensure a refreshed cache. The number and types of datagroups you would need to create depends on how often your data is updated and should take into account your organization’s data extraction, transformation, and loading (or ETL) processes and business requirements. 
+
+To define a new datagroup using LookML, you must provide a unique name and two parameters: max_cache_age and sql_trigger. 
+
+```
+datagroup: daily_etl {
+    max_cache_age: "24 hours"
+    sql_trigger: SELECT max(id) FROM my_tablename
+}
+```
+
+**max_cache_age** - specifies the maximum number of hours to keep a cached result, such as 24 hours. 
+
+**sql_trigger** - is used to write a SELECTstatement that can tell Looker whether the results have changed. The sql_trigger should be written to return only one value, such as the maximum ID value in a table. Looker will send this statement to the connected database on a regular frequency. Once it finds that the value has changed, Looker takes that as a cue to refresh the cache.
+
+Of course, while only one of these parameters is required, we do recommend as a Looker best practice using both to achieve the desired caching results. For example, if no change is detected by the sql_trigger check, that could mean something went wrong with the database ETL process or the sql_triggeritself. By including a max_cache_age, the cache would still get refreshed regardless after a set duration.
+
+The frequency of the sql_trigger’s pinging of the database is defined in the connection settings by your Looker administrator. The frequency is determined by a cron string in the connection’s PDT And Datagroup Maintenance Schedule field. By default, it is every 5 minutes. The frequency of the sql_triggercheck should match the approximate frequency of the data updates. For example, every 5 minutes is too frequent if your data warehouse is only updating every few hours or once per day.
+
+In addition, companies using certain database dialects may want to let the database “hibernate” outside of work hours to save money, so they would not want Looker waking up the database with sql_trigger checks. 
+
+Be aware though that in Looker, defining a datagroup by itself doesn’t do anything. It is a two-step process. After defining the datagroup, you need to apply the datagroup to a LookML object. 
+
+you can use the persist_with parameter to apply a datagroup at the model level. When you do this, Looker will apply the same caching rules to all Explores within this model. In
+fact, whenever you create a new LookML project by having Looker generate the model from the database schema, Looker will automatically create a default datagroup in the model file that you can customize as needed. 
+
+You can also choose to apply a caching policy on an individual Explore, which would override whatever is set at the model level. 
+
+For example, to apply a datagroup to specific Explore, use the persist_with parameter within that Explore’s definition, rather than at the model level. To apply a datagroup to a specific set of Explores but not all Explores in a model, use the persist_withparameter in each Explore’s definition and specify the same datagroup name. Since Explores are the foundation for all content in Looker, the same caching logic would carry over to Looks and dashboards created from the Explore.
+
+You can also use datagroups to tell Looker when to rebuild a persistent derived table (or PDT). 
+
+To do this, simply specify the datagroup name in the datagroup_trigger parameter of the PDT. While there are a few different options for persisting derived tables in Looker, using the datagroup_trigger parameter is the recommended best practice to ensure that the data remain current. 
+
+Additionally, schedules for Looks and dashboards can also be run on datagroups. You can instruct Looker to run a Look or dashboard automatically upon expiration of a caching policy, so new data is retrieved and “pre-cached” for any business users who need it.
+
+> Please remember though if your database connection is configured in Looker to use dynamic usernames such as OAuth for BigQuery, then you cannot use datagroups for models using that connection. Instead, use a persist_for parameter to cache Explore queries for a fixed amount of time. In addition, remember that when using OAuth for BigQuery, persistent derived tables are not supported. 
+
+In summary, every time that a user runs a query, Looker checks to see if that query has been run before. If it has not been run before, Looker runs the query on the
+database, and then caches the results for future use. If the query has been run before, Looker then checks the caching policies to evaluate whether the results should still be considered valid. If the cached results are still valid, Looker returns the cached results to the business user. If the same query has been run before, but the results are no
+longer valid per the caching policies, then Looker sends the query to the database to get new results. It then caches the new results for future use.
+
+# Fostering a great user experience
+
+## Custom homepages
+
+As a Looker administrator, you have many types of responsibilities that directly impact your end users, from the ongoing performance optimization of the platform, to managing content access and permissions.
+
+One additional responsibility you might not have considered is that of the experience your end users have upon landing into the Looker platform after login. What content is displayed to them? How is it organized? Many organizations choose to use Looker’s default homepage, but you are not bound to that. You can design and create different homepage experiences for different communities of users within your organization.
+
+The easier and more organized content is offered and discoverable within the Looker platform, the better experience your end users will have. Specifically, the Looker content they care about most, available to them in as lightweight a way as possible.
+
+We, all of us, also interpret data differently and work differently as a result. We at Looker fully acknowledge this and have provided the ability for Looker administrators like you to craft different custom homepage experiences for different teams and individuals within your organization.
+
+Ultimately, though, what does all this mean? Yes, empowering your end users with better content discovery truly can empower the entire organization, but it also directly impacts Looker adoption and user retention at your organization.
+
+## Creating a custom Looker homepage
+
+As a Looker administrator, you have a vested interest in fostering the best possible experience for your users. As previously discussed, one way to actively promote that great end user experience is to provide them with a custom Looker homepage. We’re not saying that you need to create a custom homepage for every individual or team in every situation.
+
+In the admin panel of the Looker user interface, you will see the “Homepage” menu option. After clicking into that, you’ll see that you are presented with two ways of assigning homepage experiences to your end users. If you want to assign a custom (or default) homepage experience to your entire organization, you can toggle between them.
+
+If your end users or teams already actively utilize a Looker board, you can define for them that board as their custom homepage experience.
+
+If your end users or teams require something more tailored to their specific needs or responsibilities, you can write a Markdown file using the Looker integrated development environment (IDE). Using Markdown, you can very logically organize and curate Looker content for your users or teams. The power of Markdown here is that you can make this as simple or exactingly specific as your users’ needs demand. Once you create your Markdown document, you can simply declare the path to it in the Homepage section of the Admin panel.
+
+If you want to define different experiences for different teams and individuals, you can edit the landing_page user attributes to route them to their different homepage experiences. As a Looker administrator, you have both full and entirely granular control over the experience of your end users. You would simply browse to the User Attributes page from the Users section of the Admin panel, and then configure the landing_page attribute for as many users or groups as you see fit.
+
 
 
