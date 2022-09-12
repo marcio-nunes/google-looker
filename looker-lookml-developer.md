@@ -1053,4 +1053,54 @@ In addition to the key parameters for explore_sourceandcolumns, there are many o
 
 In summary, the key parameters for native derived tables are **explore_source** and column. explore_sourcepoints to the Explore in your model that serves as the foundation for the derived table and is the basis of the FROM statement in your SQL query. **column** specifies an output column for the native derived table and represents a field that is being SELECTed in your SQL query. In addition, there are other useful parameters for native derived tables, such as **filters** and **derived_columns**, which you can use to apply filters and define new columns that do not yet exist in your Explore.
 
-## 
+## Using persistent derived tables
+
+- Recognize and articulate where in the Looker UI to create a persistent derived table
+- Recognize and articulate the specific purpose of deploying a persistent derived table
+- Recognize and define the process by which someone would create a persistent derived table
+
+In Looker, derived tables can be ephemeral, meaning that Looker builds them at run-time, or they can be persistent, meaning that they are written back to the connected database. The benefit of persistent derived tables, or PDTs, is that they are ready to go when business users need them; while the main downside is that they take up storage space in your database, which may correlate to cost.
+
+We will explore how PDTs are written back to and stored in the connected database in Looker. 
+
+In Looker, ephemeral derived tables build at runtime as temporary tables or common table expressions (CTEs) that are defined in the generated SQL with the following syntax: WITH derived_table_name AS (SELECT column_1 ... and so on.
+
+By contrast, a PDT will run a SQL CREATE statement in the underlying database to create a physical table. Both SQL derived and native derived tables can be saved as PDTs.
+
+When a business user selects a field or filter from a PDT, the generated SQL will join to the PDT, just as it would to a regular table in the database.
+
+Another key point about PDTs is that Looker will build a version of the PDT specifically for your Git branch in Development Mode. After you have deployed your code to  production, or if the PDT already existed in production and you were modifying it, business users querying the PDT in production mode will be pointed to a separate version for production.
+
+We recommend naming the schema for PDTssomething like “X_scratch”, but you could call it anything you want. The important thing is to configure a schema dedicated to Looker 
+PDTs in your database. Typically, a database admin would create the schema, and then a Looker admin would specify the schema name in the connection settings of the Looker instance.
+
+Second, although the derived table is named user_order_facts, Looker will auto-generate the name for the PDT, so it can keep track of different versions of the PDT in development or production modes. In the table name, a text string of a long jumble of letters and numbers will be prepended to the derived table name. PDT names always start with this hash, which encodes information such as the database connection and SQL that it uses.
+
+To persist a derived table, you must use at least one of the following parameters in the definition.
+
+**datagroup_trigger** uses a datagroup, or caching policy configured in the model. As a best practice, we recommend using datagroup_trigger if datagroups are already defined in your model.
+
+**sql_trigger_value** uses a pre-written SELECTstatement that returns one value such as the maximum value of a user ID column. Looker sends that SELECT statement to the database repeatedly, and when it discovers the result has changed, it takes this as a cue to rebuild the PDT.
+
+**persist_for** instructs the PDT to be available for a set duration, such as “1 hour” or “4 hours”. There are a few things to consider before choosing this option to persist your derived tables. First, because persist_for does not contain any rebuild logic, the PDT does not get updated at any time within the specified duration. 
+
+In addition, once time is up, the PDT is dropped and is not recreated until the next business user needs it for a query. 
+
+As the primary benefit of PDTs is having data readily available to minimize query runtimes, we recommend that you use persist_for in conjunction with sql_trigger_valueto
+ensure that data updates within the duration, or simply use datagroup_trigger or sql_trigger_value on their own.
+
+If you have a use case for it, you can also make SQL derived tables select FROM one or more other derived tables. This would create cascading derived tables due to dependencies between the tables. Given that PDT names always start with a long hash, you can use .SQL_TABLE_NAME (in capital letters) as a substitution operator to refer to the view name. This enables Looker to plug in the physical table name at runtime.
+
+If you persist the cascading derived tables, then it is important to ensure they rebuild in the correct sequence, so the dependent PDTs rebuild with the most recent data. You cannot explicitly control the sequence that Looker users to rebuild PDTs. Now, one way you could try to make all your PDTs build in the right order is to stagger the sql_trigger_value, based on the typical build time of the preceding derived table. As you might imagine, this isn’t foolproof. 
+
+This is another reason why datagroup_trigger is better than sql_trigger_value for applying persistence. If all your cascading PDTs use the same datagroup_trigger, then
+Looker will actually be able to detect the dependencies and rebuild the PDTs in the guaranteed correct sequence.
+
+Last, we also recommend that you add indexing to your PDTs. Indexing is like a card catalog in a library, where you could look up the location of a book to quickly find it among the shelves. Similarly, indexes help databases process queries more quickly. Looker accepts the indexing parameters for most database dialects. We suggest discussing indexing of PDTs with a data engineer or database administrator at your company to determine the best option for your use case.
+
+In summary, after PDTs are written back to your databases, they are stored as physical tables that be queried and joined just like any other table in your database. Looker builds a separate version of the PDT in development and production modes to ensure that you can create and test PDTs without impacting the production environment until you are ready to merge your updates. Be sure to create a schema specifically for Looker PDTs. Within this schema, Looker auto-generates the name for the PDT, so it can keep track of different versions and encode information such as the database connection and SQL that it uses.
+
+## Caching and datagroups
+
+
+
