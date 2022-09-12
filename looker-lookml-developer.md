@@ -974,3 +974,21 @@ Though which option you use will depend on your particular details of your LookM
 - Recognize and articulate the specific purpose of a SQL derived table
 - Recognize and define the process by which someone would create a SQL derived table
 
+In Looker, you can use SQL derived tables to create new custom tables using manually written SQL queries. 
+
+Begin by ensuring that you are in Development Mode. Then, click Develop on the left side navigation menu to see the develop options.
+
+**SQL Runner** - In Looker, the easiest way to create a SQL derived table is through SQL Runner, which provides an interface for you to write and test SQL queries to your available database connections. 
+
+After confirming that the query returned the desired results, click on the gear icon in the top right corner and choose Add to Project. Select the project name from the dropdown, and give your derived table a descriptive name. Then, click Add. You will be redirected to the Looker IDE to review the newly created view file for your derived table. 
+
+It is a best practice in Looker to keep the view files organized in the views folder of a LookML project. To move the file, simply click on the file in the file browser, and drag the file under the folder named views.
+
+Looker auto-generates a count measure along with the dimensions used in the derived table. Sometimes this auto-generated count measure is not valuable, if you already have a count in another view that provides the same number. So you can either delete the measure, or hide it using the **hidden: yes** parameter.
+
+A final best practice is to ensure that the new view has a primary key. You can add the **primary_key: yes** parameter to a dimension which is the core organizing ID of this
+view that provides details about each individual record. 
+
+
+
+
