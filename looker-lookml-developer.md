@@ -1186,4 +1186,17 @@ If your end users or teams require something more tailored to their specific nee
 If you want to define different experiences for different teams and individuals, you can edit the landing_page user attributes to route them to their different homepage experiences. As a Looker administrator, you have both full and entirely granular control over the experience of your end users. You would simply browse to the User Attributes page from the Users section of the Admin panel, and then configure the landing_page attribute for as many users or groups as you see fit.
 
 
+## Communicating with your users
+
+As a Looker administrator, you have a vested interest in fostering the best possible experience for your users. One part of working to achieve that is engaging regularly with your end users. They should have ways to submit feedback to you on any pain points they may experience, but it’s equally as important for you to regularly communicate to them, and you can do so very easily through Looker’s custom sidebar - a Looker administrator-related feature to enable is something called the custom sidebar, which displays to the extreme right of the Looker user interface when active.
+
+From this sidebar, when active, you can share all sorts of information in various formats with your end users. Looker feature update information, various BI or data analytics URLs you would like them to check out, images, Looks and dashboards, and more. The sidebar operates by displaying various cards that you as a Looker administrator add, modify and delete for your end users as needed. You can also rearrange your cards to highlight new or newly edited cards.
+
+In addition to Looker content like Looks and dashboards, you can also link to Markdown documents written in the Looker integrated development environment (IDE). This is a great way to apply version control to any regular announcements you might make to your user communities.
+
+first you’d navigate to the LookML project you have set up as your administrator sandbox project. Within that project, you can select your preferred Markdown document, and then within the document itself, select the “View Document” menu option. With your Markdown document open, copy the link to the document from your browser address bar. And paste it into the Link section of the card. Click the Save button to save your changes.
+
+
+
+
 
