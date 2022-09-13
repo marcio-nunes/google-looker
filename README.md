@@ -1,4 +1,4 @@
-# google-looker-certification-guide
+# google-looker
 
 - [Data Consumer](looker-data-consumer.md)
 - [LookML Developer](looker-lookml-developer.md)
